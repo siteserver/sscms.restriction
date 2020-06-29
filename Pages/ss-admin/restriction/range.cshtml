@@ -1,0 +1,33 @@
+@page
+@{ Layout = "_Layout"; }
+
+<el-table
+  :data="ranges"
+  stripe
+  style="width: 100%">
+  <el-table-column
+    label="IP访问规则">
+    <template slot-scope="scope">
+      {{ scope.row.ipRange }}
+    </template>
+  </el-table-column>
+  <el-table-column
+    label="操作"
+    width="220">
+    <template slot-scope="scope">
+      <el-link :underline="false" type="primary" v-on:click="btnEditClick(scope.row)">编辑</el-link>
+      <el-link :underline="false" type="danger" v-on:click="btnDeleteClick(scope.row)">删除</el-link>
+    </template>
+  </el-table-column>
+</el-table>
+
+<el-divider></el-divider>
+<div style="height: 10px"></div>
+
+<el-button size="small" type="primary" v-on:click="btnAddClick">
+  添 加
+</el-button>
+
+@section Scripts{
+  <script src="/assets/restriction/js/range.js" type="text/javascript"></script>
+}
