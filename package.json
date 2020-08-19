@@ -25,22 +25,22 @@
     "permissions": {
       "restriction_settings": {
         "text": "访问限制选项",
-        "type": "app"
+        "type": ["app"]
       },
       "restriction_white": {
         "text": "IP地址白名单",
-        "type": "app"
+        "type": ["app"]
       },
       "restriction_black": {
         "text": "IP地址黑名单",
-        "type": "app"
+        "type": ["app"]
       }
     },
     "menus:app_plugins_all:menus": {
       "restriction_all": {
         "text": "后台访问限制",
         "iconClass": "ion-unlocked",
-        "type": "app",
+        "type": ["app"],
         "permissions": [
           "restriction_settings",
           "restriction_white",

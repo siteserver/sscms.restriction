@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SSCMS.Dto;
 using SSCMS.Restriction.Abstractions;
-using SSCMS.Restriction.Implements;
+using SSCMS.Restriction.Core;
 using SSCMS.Services;
 using SSCMS.Utils;
 

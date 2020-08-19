@@ -6,7 +6,7 @@ using SSCMS.Restriction.Abstractions;
 using SSCMS.Restriction.Models;
 using SSCMS.Services;
 
-namespace SSCMS.Restriction.Implements
+namespace SSCMS.Restriction.Core
 {
     public class RangeRepository : IRangeRepository
     {

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Datory;
 using SSCMS.Restriction.Abstractions;
 using SSCMS.Restriction.Models;
 using SSCMS.Services;
 
-namespace SSCMS.Restriction.Implements
+namespace SSCMS.Restriction.Core
 {
     public class SettingsRepository : ISettingsRepository
     {

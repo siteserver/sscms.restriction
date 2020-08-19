@@ -4,7 +4,7 @@ using SSCMS.Plugins;
 using SSCMS.Restriction.Abstractions;
 using SSCMS.Utils;
 
-namespace SSCMS.Restriction.Implements
+namespace SSCMS.Restriction.Core
 {
     public class PluginMiddleware : IPluginMiddleware
     {

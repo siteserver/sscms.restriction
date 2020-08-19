@@ -9,6 +9,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <ProjectReference Include="..\..\..\SSCMS\SSCMS.csproj" />
     <Content Update="wwwroot\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="README.md" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using SSCMS.Plugins;
-using SSCMS.Repositories;
 using SSCMS.Restriction.Abstractions;
 using SSCMS.Restriction.Models;
-using SSCMS.Services;
 
-namespace SSCMS.Restriction.Implements
+namespace SSCMS.Restriction.Core
 {
 	public class RestrictionManager : IRestrictionManager
     {
