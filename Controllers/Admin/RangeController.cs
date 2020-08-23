@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SSCMS.Configuration;
 using SSCMS.Restriction.Abstractions;
 using SSCMS.Restriction.Core;
 using SSCMS.Services;
@@ -8,7 +9,7 @@ using SSCMS.Utils;
 
 namespace SSCMS.Restriction.Controllers.Admin
 {
-    [Authorize(Roles = AuthTypes.Roles.Administrator)]
+    [Authorize(Roles = Types.Roles.Administrator)]
     [Route(Constants.ApiAdminPrefix)]
     public partial class RangeController : ControllerBase
     {

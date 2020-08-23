@@ -2,7 +2,7 @@
   "name": "restriction",
   "displayName": "后台访问限制插件",
   "description": "SSCMS 后台访问限制插件能够设置后台访问IP地址黑名单以及白名单，增强CMS系统后台安全性",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "GPL-3.0",
   "publisher": "sscms",
   "engines": {
@@ -19,7 +19,7 @@
     "url": "https://github.com/siteserver/sscms.restriction"
   },
   "icon": "/assets/restriction/logo.svg",
-  "output": "bin/Release/netcoreapp3.1",
+  "output": "",
   "main": "SSCMS.Restriction.dll",
   "extensions": {
     "permissions": {
