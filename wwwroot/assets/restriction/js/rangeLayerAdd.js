@@ -1,11 +1,11 @@
 var $url = 'restriction/rangeLayerAdd';
 
 var data = utils.init({
-  isWhiteList: utils.getQueryBoolean('isWhiteList'),
-  rangeId: utils.getQueryInt('rangeId'),
+  isAllowList: utils.getQueryBoolean('isAllowList'),
+  range: utils.getQueryString('range'),
   ipAddress: null,
   form: {
-    ipRange: utils.getQueryString('ipRange')
+    range: utils.getQueryString('range')
   }
 });
 
@@ -30,16 +30,16 @@ var methods = {
 
     utils.loading(this, true);
     $api.post($url, {
-      isWhiteList: this.isWhiteList,
-      ipRange: this.form.ipRange
+      isAllowList: this.isAllowList,
+      range: this.form.range
     }).then(function (response) {
-      parent.$vue.apiGet();
-      utils.success('设置保存成功');
-      utils.closeLayer();
+      setTimeout(function() {
+        parent.$vue.apiGet();
+        utils.success('设置保存成功');
+        utils.closeLayer();
+      }, 30000);
     }).catch(function (error) {
       utils.error(error);
-    }).then(function () {
-      utils.loading($this, false);
     });
   },
 
@@ -48,17 +48,17 @@ var methods = {
 
     utils.loading(this, true);
     $api.put($url, {
-      isWhiteList: this.isWhiteList,
-      rangeId: this.rangeId,
-      ipRange: this.form.ipRange
+      isAllowList: this.isAllowList,
+      oldRange: this.range,
+      newRange: this.form.range
     }).then(function (response) {
-      parent.$vue.apiGet();
-      utils.success('设置保存成功');
-      utils.closeLayer();
+      setTimeout(function() {
+        parent.$vue.apiGet();
+        utils.success('设置保存成功');
+        utils.closeLayer();
+      }, 30000);
     }).catch(function (error) {
       utils.error(error);
-    }).then(function () {
-      utils.loading($this, false);
     });
   },
 
@@ -66,7 +66,7 @@ var methods = {
     var $this = this;
     this.$refs.form.validate(function(valid) {
       if (valid) {
-        if ($this.rangeId) {
+        if ($this.range) {
           $this.apiEdit();
         } else {
           $this.apiAdd();

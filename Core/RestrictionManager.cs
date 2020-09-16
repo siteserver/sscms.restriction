@@ -1,27 +1,24 @@
 using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using SSCMS.Restriction.Abstractions;
 using SSCMS.Restriction.Models;
+using SSCMS.Services;
 
 namespace SSCMS.Restriction.Core
 {
 	public class RestrictionManager : IRestrictionManager
     {
         public const string PermissionsSettings = "restriction_settings";
-        public const string PermissionsWhite = "restriction_white";
-        public const string PermissionsBlack = "restriction_black";
+        public const string PermissionsAllow = "restriction_allow";
+        public const string PermissionsBlock = "restriction_block";
 
-        private readonly ISettingsRepository _settingsRepository;
-        private readonly IRangeRepository _rangeRepository;
+        private readonly ISettingsManager _settingsManager;
         private readonly IHttpContextAccessor _accessor;
 
-        public RestrictionManager(ISettingsRepository settingsRepository, IRangeRepository rangeRepository, IHttpContextAccessor accessor)
+        public RestrictionManager(ISettingsManager settingsManager, IHttpContextAccessor accessor)
         {
-            _settingsRepository = settingsRepository;
-            _rangeRepository = rangeRepository;
+            _settingsManager = settingsManager;
             _accessor = accessor;
         }
 
@@ -107,29 +104,27 @@ namespace SSCMS.Restriction.Core
             return result;
         }
 
-        public async Task<bool> IsVisitAllowedAsync()
+        public bool IsVisitAllowed()
         {
-            var settings = await _settingsRepository.GetAsync();
-            var restrictionType = settings.RestrictionType;
-
-            var restrictionList = new List<string>();
-            if (restrictionType == RestrictionType.BlackList)
-            {
-                restrictionList = await _rangeRepository.GetIpRangesAsync(false);
-            }
-            else if (restrictionType == RestrictionType.WhiteList)
-            {
-                restrictionList = await _rangeRepository.GetIpRangesAsync(true);
-            }
-
             var isAllowed = true;
-            if (restrictionType != RestrictionType.None)
+
+            if (!string.IsNullOrEmpty(_settingsManager.AdminRestrictionHost))
+            {
+                var currentHost = RemoveProtocolFromUrl(GetHost());
+                if (!StartsWithIgnoreCase(currentHost, RemoveProtocolFromUrl(_settingsManager.AdminRestrictionHost)))
+                {
+                    isAllowed = false;
+                }
+            }
+
+            if (isAllowed)
             {
                 var userIp = GetIpAddress();
-                if (restrictionType == RestrictionType.BlackList)
+
+                if (_settingsManager.AdminRestrictionBlockList != null && _settingsManager.AdminRestrictionBlockList.Length > 0)
                 {
                     var list = new IpList();
-                    foreach (var restriction in restrictionList)
+                    foreach (var restriction in _settingsManager.AdminRestrictionBlockList)
                     {
                         AddRestrictionToIpList(list, restriction);
                     }
@@ -138,34 +133,21 @@ namespace SSCMS.Restriction.Core
                         isAllowed = false;
                     }
                 }
-                else if (restrictionType == RestrictionType.WhiteList)
+                else if (_settingsManager.AdminRestrictionAllowList != null && _settingsManager.AdminRestrictionAllowList.Length > 0)
                 {
-                    if (restrictionList.Count > 0)
+                    isAllowed = false;
+                    var list = new IpList();
+                    foreach (var restriction in _settingsManager.AdminRestrictionAllowList)
                     {
-                        isAllowed = false;
-                        var list = new IpList();
-                        foreach (var restriction in restrictionList)
-                        {
-                            AddRestrictionToIpList(list, restriction);
-                        }
-                        if (list.CheckNumber(userIp))
-                        {
-                            isAllowed = true;
-                        }
+                        AddRestrictionToIpList(list, restriction);
+                    }
+                    if (list.CheckNumber(userIp))
+                    {
+                        isAllowed = true;
                     }
                 }
             }
-            if (isAllowed)
-            {
-                if (settings.IsHostRestriction && !string.IsNullOrEmpty(settings.Host))
-                {
-                    var currentHost = RemoveProtocolFromUrl(GetHost());
-                    if (!StartsWithIgnoreCase(currentHost, RemoveProtocolFromUrl(settings.Host)))
-                    {
-                        isAllowed = false;
-                    }
-                }
-            }
+
             return isAllowed;
         }
 

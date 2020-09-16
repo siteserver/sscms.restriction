@@ -9,8 +9,6 @@ namespace SSCMS.Restriction
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<ISettingsRepository, SettingsRepository>();
-            services.AddScoped<IRangeRepository, RangeRepository>();
             services.AddScoped<IRestrictionManager, RestrictionManager>();
         }
     }

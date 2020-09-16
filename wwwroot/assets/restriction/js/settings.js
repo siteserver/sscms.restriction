@@ -1,8 +1,10 @@
 var $url = 'restriction/settings';
 
 var data = utils.init({
-  settings: null,
-  host: null
+  form: {
+    isHost: false,
+    host: null
+  }
 });
 
 var methods = {
@@ -13,9 +15,15 @@ var methods = {
     $api.get($url).then(function (response) {
       var res = response.data;
 
-      $this.settings = res.settings;
-      if (!$this.settings.isHostRestriction && !$this.settings.host) {
-        $this.settings.host = res.host;
+      $this.form.isHost = res.isHost;
+      
+      if (res.isHost) {
+        $this.form.host = res.host;
+      } else {
+        $this.form.host = location.host;
+        if (location.port) {
+          $this.form.host += ':' + location.port;
+        }
       }
     }).catch(function (error) {
       utils.error(error);
@@ -28,7 +36,7 @@ var methods = {
     var $this = this;
 
     utils.loading(this, true);
-    $api.post($url, this.settings).then(function (response) {
+    $api.post($url, this.form).then(function (response) {
       var res = response.data;
 
       utils.success('设置保存成功');

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace SSCMS.Restriction.Abstractions
+﻿namespace SSCMS.Restriction.Abstractions
 {
     public interface IRestrictionManager
     {
@@ -8,6 +6,6 @@ namespace SSCMS.Restriction.Abstractions
 
         string GetHost();
 
-        Task<bool> IsVisitAllowedAsync();
+        bool IsVisitAllowed();
     }
 }

@@ -1,7 +1,7 @@
 var $url = '/restriction/range/';
 
 var data = utils.init({
-  isWhiteList: utils.getQueryBoolean('isWhiteList'),
+  isAllowList: utils.getQueryBoolean('isAllowList'),
   ranges: null
 });
 
@@ -12,7 +12,7 @@ var methods = {
     utils.loading(this, true);
     $api.get($url, {
       params: {
-        isWhiteList: this.isWhiteList
+        isAllowList: this.isAllowList
       }
     }).then(function (response) {
       var res = response.data;
@@ -25,24 +25,25 @@ var methods = {
     });
   },
 
-  apiDelete: function(rangeId) {
+  apiDelete: function(range) {
     var $this = this;
 
     utils.loading(this, true);
     $api.delete($url, {
       data: {
-        isWhiteList: this.isWhiteList,
-        rangeId: rangeId
+        isAllowList: this.isAllowList,
+        range: range
       }
     }).then(function (response) {
       var res = response.data;
 
-      $this.ranges = res.value;
-      utils.success('IP访问规则删除成功');
+      setTimeout(function() {
+        $this.apiGet();
+        utils.success('IP访问规则删除成功');
+        utils.closeLayer();
+      }, 30000);
     }).catch(function (error) {
       utils.error(error);
-    }).then(function () {
-      utils.loading($this, false);
     });
   },
 
@@ -50,18 +51,17 @@ var methods = {
     utils.openLayer({
       title: '添加IP访问规则',
       url: utils.getPageUrl('restriction', 'rangeLayerAdd', {
-        isWhiteList: this.isWhiteList
+        isAllowList: this.isAllowList
       })
     })
   },
 
   btnEditClick: function(range) {
     utils.openLayer({
-      title: '添加IP访问规则',
+      title: '编辑IP访问规则',
       url: utils.getPageUrl('restriction', 'rangeLayerAdd', {
-        isWhiteList: this.isWhiteList,
-        rangeId: range.id,
-        ipRange: range.ipRange
+        isAllowList: this.isAllowList,
+        range: range
       })
     })
   },
@@ -70,9 +70,9 @@ var methods = {
     var $this = this;
     utils.alertDelete({
       title: '删除IP访问规则',
-      text: 'IP访问规则：' + range.ipRange,
+      text: 'IP访问规则：' + range,
       callback: function() {
-        $this.apiDelete(range.id);
+        $this.apiDelete(range);
       }
     })
   }

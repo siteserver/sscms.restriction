@@ -1,11 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SSCMS.Configuration;
-using SSCMS.Restriction.Abstractions;
-using SSCMS.Restriction.Core;
 using SSCMS.Services;
-using SSCMS.Utils;
 
 namespace SSCMS.Restriction.Controllers.Admin
 {
@@ -16,52 +13,28 @@ namespace SSCMS.Restriction.Controllers.Admin
         private const string Route = "restriction/range";
 
         private readonly IAuthManager _authManager;
-        private readonly IRangeRepository _rangeRepository;
+        private readonly ISettingsManager _settingsManager;
 
-        public RangeController(IAuthManager authManager, IRangeRepository rangeRepository)
+        public RangeController(IAuthManager authManager, ISettingsManager settingsManager)
         {
             _authManager = authManager;
-            _rangeRepository = rangeRepository;
+            _settingsManager = settingsManager;
         }
 
-        [HttpGet, Route(Route)]
-        public async Task<ActionResult<ListResult>> GetList([FromQuery] ListRequest request)
+        public class ListRequest
         {
-            if (request.IsWhiteList && !await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsWhite))
-            {
-                return Unauthorized();
-            }
-
-            if (!request.IsWhiteList && !await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsBlack))
-            {
-                return Unauthorized();
-            }
-
-            return new ListResult
-            {
-                Ranges = await _rangeRepository.GetAllAsync(request.IsWhiteList)
-            };
+            public bool IsAllowList { get; set; }
         }
 
-        [HttpDelete, Route(Route)]
-        public async Task<ActionResult<ListResult>> Delete([FromBody] DeleteRequest request)
+        public class ListResult
         {
-            if (request.IsWhiteList && !await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsWhite))
-            {
-                return Unauthorized();
-            }
+            public string[] Ranges { get; set; }
+        }
 
-            if (!request.IsWhiteList && !await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsBlack))
-            {
-                return Unauthorized();
-            }
-
-            await _rangeRepository.DeleteAsync(request.IsWhiteList, request.RangeId);
-
-            return new ListResult
-            {
-                Ranges = await _rangeRepository.GetAllAsync(request.IsWhiteList)
-            };
+        public class DeleteRequest
+        {
+            public bool IsAllowList { get; set; }
+            public string Range { get; set; }
         }
     }
 }

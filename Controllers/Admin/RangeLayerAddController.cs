@@ -1,14 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SSCMS.Configuration;
-using SSCMS.Dto;
-using SSCMS.Extensions;
 using SSCMS.Restriction.Abstractions;
-using SSCMS.Restriction.Core;
-using SSCMS.Restriction.Models;
 using SSCMS.Services;
-using SSCMS.Utils;
 
 namespace SSCMS.Restriction.Controllers.Admin
 {
@@ -19,69 +13,27 @@ namespace SSCMS.Restriction.Controllers.Admin
         private const string Route = "restriction/rangeLayerAdd";
 
         private readonly IAuthManager _authManager;
-        private readonly IRangeRepository _rangeRepository;
+        private readonly ISettingsManager _settingsManager;
         private readonly IRestrictionManager _restrictionManager;
 
-        public RangeLayerAddController(IAuthManager authManager, IRangeRepository rangeRepository, IRestrictionManager restrictionManager)
+        public RangeLayerAddController(IAuthManager authManager, ISettingsManager settingsManager, IRestrictionManager restrictionManager)
         {
             _authManager = authManager;
-            _rangeRepository = rangeRepository;
+            _settingsManager = settingsManager;
             _restrictionManager = restrictionManager;
         }
 
-        [HttpGet, Route(Route)]
-        public async Task<ActionResult<StringResult>> Get()
+        public class AddRequest
         {
-            if (!await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsSettings))
-            {
-                return Unauthorized();
-            }
-
-            return new StringResult
-            {
-                Value = _restrictionManager.GetIpAddress()
-            };
+            public bool IsAllowList { get; set; }
+            public string Range { get; set; }
         }
 
-        [HttpPost, Route(Route)]
-        public async Task<ActionResult<BoolResult>> Add([FromBody] AddRequest request)
+        public class EditRequest
         {
-            if (!await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsSettings))
-            {
-                return Unauthorized();
-            }
-
-            if (await _rangeRepository.ExistsAsync(request.IsWhiteList, request.IpRange))
-            {
-                return this.Error("添加失败，Ip 段已存在");
-            }
-
-            await _rangeRepository.InsertAsync(new Range
-            {
-                IsWhiteList = request.IsWhiteList,
-                IpRange = request.IpRange
-            });
-
-            return new BoolResult
-            {
-                Value = true
-            };
-        }
-
-        [HttpPut, Route(Route)]
-        public async Task<ActionResult<BoolResult>> Edit([FromBody] EditRequest request)
-        {
-            if (!await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsSettings))
-            {
-                return Unauthorized();
-            }
-
-            await _rangeRepository.UpdateAsync(request.IsWhiteList, request.RangeId, request.IpRange);
-
-            return new BoolResult
-            {
-                Value = true
-            };
+            public bool IsAllowList { get; set; }
+            public string OldRange { get; set; }
+            public string NewRange { get; set; }
         }
     }
 }

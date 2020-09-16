@@ -1,12 +1,9 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using SSCMS.Configuration;
-using SSCMS.Dto;
 using SSCMS.Restriction.Abstractions;
-using SSCMS.Restriction.Core;
 using SSCMS.Services;
-using SSCMS.Utils;
 
 namespace SSCMS.Restriction.Controllers.Admin
 {
@@ -16,53 +13,29 @@ namespace SSCMS.Restriction.Controllers.Admin
     {
         private const string Route = "restriction/settings";
 
+        private readonly IHostApplicationLifetime _hostApplicationLifetime;
         private readonly IAuthManager _authManager;
-        private readonly ISettingsRepository _settingsRepository;
+        private readonly ISettingsManager _settingsManager;
         private readonly IRestrictionManager _restrictionManager;
 
-        public SettingsController(IAuthManager authManager, ISettingsRepository settingsRepository, IRestrictionManager restrictionManager)
+        public SettingsController(IHostApplicationLifetime hostApplicationLifetime, IAuthManager authManager, ISettingsManager settingsManager, IRestrictionManager restrictionManager)
         {
+            _hostApplicationLifetime = hostApplicationLifetime;
             _authManager = authManager;
-            _settingsRepository = settingsRepository;
+            _settingsManager = settingsManager;
             _restrictionManager = restrictionManager;
         }
 
-        [HttpGet, Route(Route)]
-        public async Task<ActionResult<GetResult>> GetConfig()
+        public class GetResult
         {
-            if (!await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsSettings))
-            {
-                return Unauthorized();
-            }
-
-            var settings = await _settingsRepository.GetAsync();
-            var host = _restrictionManager.GetHost();
-
-            return new GetResult
-            {
-                Settings = settings,
-                Host = host
-            };
+            public bool IsHost { get; set; }
+            public string Host { get; set; }
         }
 
-        [HttpPost, Route(Route)]
-        public async Task<ActionResult<BoolResult>> SetConfig([FromBody] SubmitRequest request)
+        public class SubmitRequest
         {
-            if (!await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsSettings))
-            {
-                return Unauthorized();
-            }
-
-            var settings = await _settingsRepository.GetAsync();
-            settings.RestrictionType = request.RestrictionType;
-            settings.IsHostRestriction = request.IsHostRestriction;
-            settings.Host = request.Host;
-            await _settingsRepository.SetAsync(settings);
-
-            return new BoolResult
-            {
-                Value = true
-            };
+            public bool IsHost { get; set; }
+            public string Host { get; set; }
         }
     }
 }

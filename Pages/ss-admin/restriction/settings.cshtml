@@ -3,28 +3,16 @@
 
 <div style="height: 10px"></div>
 
-<el-form ref="form" :model="settings" size="small" label-width="180px">
-  <el-form-item label="管理后台访问IP地址限制" prop="restrictionType" name="restrictionType" :rules="{ required: true }">
-    
-    <el-select v-model="settings.restrictionType">
-      <el-option value="None" label="无访问限制"></el-option>
-      <el-option value="WhiteList" label="启用白名单，允许白名单中的IP进行访问，其余禁止访问"></el-option>
-      <el-option value="BlackList" label="启用黑名单，禁止黑名单中的IP进行访问，其余允许访问"></el-option>
-    </el-select>
-    
-    <div class="tips">
-      限制来源IP地址
-    </div>
-  </el-form-item>
-  <el-form-item label="管理后台访问域名限制" prop="isHostRestriction" name="isHostRestriction" :rules="{ required: true }">
-    <el-select v-model="settings.isHostRestriction">
+<el-form ref="form" :model="form" size="small" label-width="180px">
+  <el-form-item label="管理后台访问域名限制" prop="isHost" name="isHost" :rules="{ required: true }">
+    <el-select v-model="form.isHost">
       <el-option :value="false" label="无访问限制"></el-option>
       <el-option :value="true" label="启用访问域名限制"></el-option>
     </el-select>
     <div class="tips">限制后台域名地址</div>
   </el-form-item>
-  <el-form-item v-if="settings.isHostRestriction" label="管理后台访问域名" prop="host" name="host" :rules="{ required: true }">
-    <el-input v-model="settings.host"></el-input>
+  <el-form-item v-if="form.isHost" label="管理后台访问域名" prop="host" name="host" :rules="{ required: true }">
+    <el-input v-model="form.host"></el-input>
     <div class="tips">如果非80端口，后台访问域名需要包含。</div>
   </el-form-item>
 </el-form>

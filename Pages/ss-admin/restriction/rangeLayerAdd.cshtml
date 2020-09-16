@@ -18,8 +18,8 @@
 <el-divider></el-divider>
 
 <el-form ref="form" :model="form" size="small" status-icon label-width="140px">
-  <el-form-item label="IP访问规则" prop="ipRange" :rules="[{ required: true, message: '请输入IP访问规则' }]">
-    <el-input v-model="form.ipRange" name="ipRange" autocomplete="off"></el-input>
+  <el-form-item label="IP访问规则" prop="range" :rules="[{ required: true, message: '请输入IP访问规则' }]">
+    <el-input v-model="form.range" name="range" autocomplete="off"></el-input>
   </el-form-item>
 </el-form>
 
