@@ -16,14 +16,11 @@ var methods = {
       var res = response.data;
 
       $this.form.isHost = res.isHost;
-      
+
       if (res.isHost) {
         $this.form.host = res.host;
       } else {
         $this.form.host = location.host;
-        if (location.port) {
-          $this.form.host += ':' + location.port;
-        }
       }
     }).catch(function (error) {
       utils.error(error);

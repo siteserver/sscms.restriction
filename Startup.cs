@@ -1,15 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SSCMS.Plugins;
-using SSCMS.Restriction.Abstractions;
-using SSCMS.Restriction.Core;
+﻿using SSCMS.Plugins;
 
 namespace SSCMS.Restriction
 {
-    public class Startup : IPluginConfigureServices
+    public class Startup : IPluginExtension
     {
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddScoped<IRestrictionManager, RestrictionManager>();
-        }
+        
     }
 }

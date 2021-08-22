@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SSCMS.Dto;
 using SSCMS.Restriction.Core;
+using SSCMS.Utils;
 
 namespace SSCMS.Restriction.Controllers.Admin
 {
@@ -17,7 +18,7 @@ namespace SSCMS.Restriction.Controllers.Admin
 
             return new StringResult
             {
-                Value = _restrictionManager.GetIpAddress()
+                Value = PageUtils.GetIpAddress(Request)
             };
         }
     }

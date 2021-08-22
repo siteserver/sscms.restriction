@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SSCMS.Configuration;
-using SSCMS.Restriction.Abstractions;
 using SSCMS.Services;
 
 namespace SSCMS.Restriction.Controllers.Admin
@@ -14,13 +13,11 @@ namespace SSCMS.Restriction.Controllers.Admin
 
         private readonly IAuthManager _authManager;
         private readonly ISettingsManager _settingsManager;
-        private readonly IRestrictionManager _restrictionManager;
 
-        public RangeLayerAddController(IAuthManager authManager, ISettingsManager settingsManager, IRestrictionManager restrictionManager)
+        public RangeLayerAddController(IAuthManager authManager, ISettingsManager settingsManager)
         {
             _authManager = authManager;
             _settingsManager = settingsManager;
-            _restrictionManager = restrictionManager;
         }
 
         public class AddRequest
