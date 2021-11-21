@@ -10,6 +10,7 @@ namespace SSCMS.Restriction.Controllers.Admin
     public partial class RangeLayerAddController : ControllerBase
     {
         private const string Route = "restriction/rangeLayerAdd";
+        private const string RouteUpdate = "restriction/rangeLayerAdd/actions/update";
 
         private readonly IAuthManager _authManager;
         private readonly ISettingsManager _settingsManager;
@@ -26,7 +27,7 @@ namespace SSCMS.Restriction.Controllers.Admin
             public string Range { get; set; }
         }
 
-        public class EditRequest
+        public class UpdateRequest
         {
             public bool IsAllowList { get; set; }
             public string OldRange { get; set; }

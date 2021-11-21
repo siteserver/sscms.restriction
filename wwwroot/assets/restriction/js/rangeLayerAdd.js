@@ -1,4 +1,5 @@
-var $url = 'restriction/rangeLayerAdd';
+var $url = '/restriction/rangeLayerAdd';
+var $urlUpdate = $url + '/actions/update';
 
 var data = utils.init({
   isAllowList: utils.getQueryBoolean('isAllowList'),
@@ -47,7 +48,7 @@ var methods = {
     var $this = this;
 
     utils.loading(this, true);
-    $api.put($url, {
+    $api.post($urlUpdate, {
       isAllowList: this.isAllowList,
       oldRange: this.range,
       newRange: this.form.range

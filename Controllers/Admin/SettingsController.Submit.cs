@@ -21,7 +21,7 @@ namespace SSCMS.Restriction.Controllers.Admin
                 host = request.Host;
             }
 
-            _settingsManager.SaveSettings(_settingsManager.IsProtectData, _settingsManager.IsDisablePlugins, _settingsManager.DatabaseType, _settingsManager.DatabaseConnectionString, _settingsManager.RedisConnectionString, host, _settingsManager.AdminRestrictionAllowList, _settingsManager.AdminRestrictionBlockList);
+            _settingsManager.SaveSettings(_settingsManager.IsProtectData, _settingsManager.IsSafeMode, _settingsManager.IsDisablePlugins, _settingsManager.DatabaseType, _settingsManager.DatabaseConnectionString, _settingsManager.RedisConnectionString, host, _settingsManager.AdminRestrictionAllowList, _settingsManager.AdminRestrictionBlockList);
 
             //_hostApplicationLifetime.StopApplication();
 

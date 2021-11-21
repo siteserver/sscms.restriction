@@ -1,4 +1,5 @@
 var $url = '/restriction/range/';
+var $urlDelete = $url + '/actions/delete';
 
 var data = utils.init({
   isAllowList: utils.getQueryBoolean('isAllowList'),
@@ -29,11 +30,9 @@ var methods = {
     var $this = this;
 
     utils.loading(this, true);
-    $api.delete($url, {
-      data: {
-        isAllowList: this.isAllowList,
-        range: range
-      }
+    $api.post($urlDelete, {
+      isAllowList: this.isAllowList,
+      range: range
     }).then(function (response) {
       var res = response.data;
 

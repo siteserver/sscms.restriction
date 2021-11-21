@@ -8,8 +8,8 @@ namespace SSCMS.Restriction.Controllers.Admin
 {
     public partial class RangeLayerAddController
     {
-        [HttpPut, Route(Route)]
-        public async Task<ActionResult<BoolResult>> Edit([FromBody] EditRequest request)
+        [HttpPost, Route(RouteUpdate)]
+        public async Task<ActionResult<BoolResult>> Update([FromBody] UpdateRequest request)
         {
             if (!await _authManager.HasAppPermissionsAsync(RestrictionManager.PermissionsSettings))
             {
@@ -22,7 +22,7 @@ namespace SSCMS.Restriction.Controllers.Admin
                 var index = list.IndexOf(request.OldRange);
                 list[index] = request.NewRange;
 
-                _settingsManager.SaveSettings(_settingsManager.IsProtectData, _settingsManager.IsDisablePlugins, _settingsManager.DatabaseType, _settingsManager.DatabaseConnectionString, _settingsManager.RedisConnectionString, _settingsManager.AdminRestrictionHost, list.ToArray(), _settingsManager.AdminRestrictionBlockList);
+                _settingsManager.SaveSettings(_settingsManager.IsProtectData, _settingsManager.IsSafeMode, _settingsManager.IsDisablePlugins, _settingsManager.DatabaseType, _settingsManager.DatabaseConnectionString, _settingsManager.RedisConnectionString, _settingsManager.AdminRestrictionHost, list.ToArray(), _settingsManager.AdminRestrictionBlockList);
             }
             else
             {
@@ -30,7 +30,7 @@ namespace SSCMS.Restriction.Controllers.Admin
                 var index = list.IndexOf(request.OldRange);
                 list[index] = request.NewRange;
 
-                _settingsManager.SaveSettings(_settingsManager.IsProtectData, _settingsManager.IsDisablePlugins, _settingsManager.DatabaseType, _settingsManager.DatabaseConnectionString, _settingsManager.RedisConnectionString, _settingsManager.AdminRestrictionHost, _settingsManager.AdminRestrictionAllowList, list.ToArray());
+                _settingsManager.SaveSettings(_settingsManager.IsProtectData, _settingsManager.IsSafeMode, _settingsManager.IsDisablePlugins, _settingsManager.DatabaseType, _settingsManager.DatabaseConnectionString, _settingsManager.RedisConnectionString, _settingsManager.AdminRestrictionHost, _settingsManager.AdminRestrictionAllowList, list.ToArray());
             }
 
             return new BoolResult

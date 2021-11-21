@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SSCMS.Configuration;
 using SSCMS.Services;
@@ -11,6 +10,7 @@ namespace SSCMS.Restriction.Controllers.Admin
     public partial class RangeController : ControllerBase
     {
         private const string Route = "restriction/range";
+        private const string RouteDelete = "restriction/range/actions/delete";
 
         private readonly IAuthManager _authManager;
         private readonly ISettingsManager _settingsManager;
