@@ -1,4 +1,4 @@
-var $url = '/restriction/range/';
+var $url = '/restriction/range';
 var $urlDelete = $url + '/actions/delete';
 
 var data = utils.init({
